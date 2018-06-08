@@ -78,7 +78,7 @@ def length_Thorax_X(Thorax_x_Path, h_spacing, w_spacing):
     height, width, depth = img.shape
     hist1 = np.zeros( height )
     indeces = np.arange(height)
-    ret, thresh = cv2.threshold(img[:,:,0], 127, 255, cv2.THRESH_BINARY)
+    
 
     for i in range(0, height):
         hist1[i] = thresh[i,:].sum()
@@ -86,6 +86,11 @@ def length_Thorax_X(Thorax_x_Path, h_spacing, w_spacing):
     
     hist1 = hist1 /255
     temp = hist1[hist1>0]
+
+    plt.plot(temp)
+    plt.show()
+    maxIndex = hist1.argmax()
+    
     length = len(temp)
     thorax_level = 0
     if length is not 0:
@@ -209,7 +214,11 @@ def Area(rtupper, rtlower, aortic, conus, laa, lts, carina_level, thoraxx_level,
     lt[0:startIndex] = startlevel
     lt[endIndex:len(lt) -1] = endlevel       
     diff = lt - rt
+    plt.plot(diff)
+    plt.show()
+    print(carina_level, thoraxx_level)
     area = diff[int(carina_level):int(thoraxx_level)].sum()
+    print(area, h_spacing, w_spacing)
     return area * h_spacing * w_spacing
 
 def get_distanceLengthRatio(lines, h_spacing, w_spacing):
